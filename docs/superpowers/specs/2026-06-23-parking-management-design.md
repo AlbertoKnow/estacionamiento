@@ -27,7 +27,8 @@ La Universidad Tecnológica del Perú (UTP) necesita un sistema digital para ges
 | Base de datos | PostgreSQL |
 | Frontend | React + TypeScript + Tailwind CSS |
 | App de agentes (offline) | PWA con Service Workers |
-| QR offline | JWT firmado (RS256) embebido en QR |
+| QR de entrada | JWT firmado (RS256), válido 5 min, emitido online |
+| QR de sesión (salida) | JWT firmado (RS256), válido toda la estancia (max 24h), emitido online al confirmar entrada |
 | Exportar Excel/PDF | openpyxl + ReportLab |
 | Auditoría | django-auditlog |
 | Contenedores | Docker + docker-compose |
@@ -242,7 +243,17 @@ Espacio → ocupado
 ### Flujo 2 — Salida vehicular (soporta offline en sótano)
 
 ```
-Usuario muestra QR
+[Al confirmar entrada — usuario aún tiene señal en calle]
+        │
+Sistema emite QR de sesión (JWT firmado, válido max 24h,
+contiene access_record_id + user_id + campus_id)
+        │
+Usuario guarda QR de sesión en su app
+        │
+        ▼
+[Horas después — en el sótano, sin señal]
+        │
+Usuario muestra QR de sesión
         │
 Agente escanea con PWA
         │
@@ -250,13 +261,15 @@ Agente escanea con PWA
 CON SEÑAL   SIN SEÑAL
     │            │
     ▼            ▼
-Cierra      Cola local:
-AccessRecord  salida_at + espacio
-en tiempo   (sync al subir rampa)
-real
+Cierra      PWA valida firma JWT
+AccessRecord  con clave pública cacheada
+en tiempo   Cola local:
+real          (access_record_id, salida_at, agente_id)
+              → sync automático al recuperar señal
+              al subir la rampa
 ```
 
-Alerta automática si el vehículo lleva más de 15 minutos sin moverse (regla del reglamento).
+**Nota:** La falta LEVE_G (mantener ocupante en el vehículo estacionado) es reportada por el agente durante rondas físicas, no detectada automáticamente. V1 no tiene sensores de presencia — las cámaras llegan en v3.
 
 ### Flujo 3 — Registro de violación
 
@@ -296,34 +309,58 @@ Crea Reservation → espacio reservado
 
 ---
 
-## 7. Mecanismo QR offline
+## 7. Mecanismo QR — ciclo de vida completo
 
-### Estructura del QR
+V1 usa dos tipos de token QR con propósitos distintos. Ambos son JWT firmados con RS256 (clave privada en el servidor, clave pública cacheada en la PWA del agente).
 
-El QR contiene un JWT firmado con RS256 (clave privada en el servidor):
+### QR de entrada
+
+**Quién lo emite:** El servidor, a petición del usuario desde la app.
+**Cuándo:** El usuario lo genera momentos antes de llegar a la caseta (en la calle, con señal).
+**Conectividad requerida:** Sí — el usuario necesita conexión para llamar al endpoint de generación.
 
 ```json
 {
+  "type": "entry",
   "user_id": "U-001",
   "vehicle_id": "V-002",
   "campus_id": "C-AQP",
-  "issued_at": "2026-06-23T08:30:00",
+  "iat": "2026-06-23T08:30:00",
   "exp": "2026-06-23T08:35:00"
 }
 ```
 
-### Protecciones
+- **Válido 5 minutos** — previene reutilización de capturas de pantalla
+- **Un solo uso** — el servidor rechaza el mismo `iat` si ya fue procesado (previene replay attacks)
+- **Siempre validado online** — la entrada está en la calle con señal disponible
 
-- **Expira en 5 minutos** — QR capturado no reutilizable
-- **Un solo uso por ventana** — el servidor rechaza `issued_at` ya procesado (previene replay attacks)
-- **Firmado RS256** — clave privada solo en servidor, PWA solo tiene la pública para verificar
+### QR de sesión (para salida)
+
+**Quién lo emite:** El servidor, automáticamente al confirmar la entrada exitosa.
+**Cuándo:** Inmediatamente después de que el agente registra la entrada — el usuario aún está en la calle con señal.
+**Conectividad requerida para obtenerlo:** Sí — pero se obtiene en el momento de entrada, antes de bajar al sótano.
+
+```json
+{
+  "type": "exit",
+  "access_record_id": "AR-9981",
+  "user_id": "U-001",
+  "campus_id": "C-AQP",
+  "iat": "2026-06-23T08:31:00",
+  "exp": "2026-06-24T08:31:00"
+}
+```
+
+- **Válido hasta 24 horas** — cubre la estancia completa sin requerir reconexión
+- **Vinculado al AccessRecord** — identifica unívocamente qué sesión cerrar
+- **Validable offline** — la PWA verifica la firma con la clave pública cacheada sin necesitar servidor
 
 ### Comportamiento por zona
 
-| Zona | Señal | Mecanismo |
-|---|---|---|
-| Entrada (calle) | Siempre disponible | Validación completa online en tiempo real |
-| Salida (sótano) | Inestable o sin señal | PWA valida JWT localmente, cola de sync al recuperar señal |
+| Zona | Señal | Token | Validación |
+|---|---|---|---|
+| Entrada (calle) | Siempre disponible | QR de entrada (5 min) | Online completo en tiempo real |
+| Salida (sótano) | Inestable o sin señal | QR de sesión (24h) | Offline: firma local + cola de sync al subir |
 
 ---
 
@@ -354,8 +391,9 @@ El QR contiene un JWT firmado con RS256 (clave privada en el servidor):
 
 **Reporte 1 — Ocupación en tiempo real**
 - Espacios libres / ocupados / reservados por campus y sótano
+- La ocupación refleja el estado del `AccessRecord` (asignado = ocupado, cerrado = libre) — no hay sensores físicos en v1; las cámaras llegan en v3
 - Tiempo promedio de estancia del día
-- Usuarios actualmente dentro del estacionamiento
+- Usuarios actualmente dentro del estacionamiento (con AccessRecord activo)
 - Disponible para todos los roles operativos y usuarios finales
 
 **Reporte 2 — Historial de accesos**
@@ -455,7 +493,7 @@ Unit (pytest)             — lógica de negocio aislada
 | Criterio | Verificación |
 |---|---|
 | Registro de entrada en menos de 10 segundos | Prueba cronometrada en caseta |
-| QR de salida funciona sin señal en sótano | Prueba en campo con modo avión |
+| QR de sesión (salida) funciona sin señal en sótano | Prueba en campo: usuario recibe QR de sesión en entrada, baja al sótano con modo avión, agente escanea y registra salida en cola local, se sincroniza al subir la rampa |
 | Sanción calculada correctamente según reglamento | Casos de prueba con cada tipo de falta y reincidencia |
 | Usuario suspendido no puede ingresar | Intento de entrada con sanción activa |
 | Datos de un campus no visibles desde otro | Login con usuario de campus diferente |
