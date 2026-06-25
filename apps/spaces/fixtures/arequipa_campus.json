@@ -1,0 +1,35 @@
+[
+  {
+    "model": "spaces.campus",
+    "pk": 1,
+    "fields": {
+      "nombre": "Campus Arequipa",
+      "ciudad": "Arequipa",
+      "direccion": "Esq. Av. Parra N° 201-203 con Av. Andrés Martínez N° 101",
+      "horario_operacion": {
+        "lunes_sabado": {"inicio": "06:30", "fin": "22:30"},
+        "domingo": {"inicio": "07:00", "fin": "15:00"}
+      },
+      "activo": true,
+      "created_at": "2026-06-24T00:00:00Z"
+    }
+  },
+  {
+    "model": "spaces.parkinglot",
+    "pk": 1,
+    "fields": {
+      "campus": 1,
+      "nombre": "Sótano 2",
+      "nivel": -2
+    }
+  },
+  {
+    "model": "spaces.parkinglot",
+    "pk": 2,
+    "fields": {
+      "campus": 1,
+      "nombre": "Sótano 3",
+      "nivel": -3
+    }
+  }
+]
