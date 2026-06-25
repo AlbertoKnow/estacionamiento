@@ -1,0 +1,21 @@
+[
+  {"model": "violations.violationtype", "pk": 1,  "fields": {"codigo": "LEVE_A", "descripcion": "Estacionarse sin registrar entrada correctamente a través del sistema",      "nivel": "leve"}},
+  {"model": "violations.violationtype", "pk": 2,  "fields": {"codigo": "LEVE_B", "descripcion": "Dejar el vehículo con el motor encendido innecesariamente en el estacionamiento", "nivel": "leve"}},
+  {"model": "violations.violationtype", "pk": 3,  "fields": {"codigo": "LEVE_C", "descripcion": "No respetar el límite de velocidad en el estacionamiento",                   "nivel": "leve"}},
+  {"model": "violations.violationtype", "pk": 4,  "fields": {"codigo": "LEVE_D", "descripcion": "Obstruir temporalmente el paso vehicular o peatonal",                        "nivel": "leve"}},
+  {"model": "violations.violationtype", "pk": 5,  "fields": {"codigo": "LEVE_E", "descripcion": "Estacionarse incorrectamente o invadir otro espacio",                        "nivel": "leve"}},
+  {"model": "violations.violationtype", "pk": 6,  "fields": {"codigo": "LEVE_F", "descripcion": "No registrar la salida correctamente",                                       "nivel": "leve"}},
+  {"model": "violations.violationtype", "pk": 7,  "fields": {"codigo": "LEVE_G", "descripcion": "Abandonar el vehículo más tiempo del permitido sin reserva activa",          "nivel": "leve"}},
+  {"model": "violations.violationtype", "pk": 8,  "fields": {"codigo": "GRAVE_A", "descripcion": "No respetar zonas para personas con discapacidad",                          "nivel": "grave"}},
+  {"model": "violations.violationtype", "pk": 9,  "fields": {"codigo": "GRAVE_B", "descripcion": "Ingresar con un vehículo no registrado en el sistema",                      "nivel": "grave"}},
+  {"model": "violations.violationtype", "pk": 10, "fields": {"codigo": "GRAVE_C", "descripcion": "Usar el estacionamiento fuera del horario permitido",                       "nivel": "grave"}},
+  {"model": "violations.violationtype", "pk": 11, "fields": {"codigo": "GRAVE_D", "descripcion": "Causar daños menores a la infraestructura del estacionamiento",             "nivel": "grave"}},
+  {"model": "violations.violationtype", "pk": 12, "fields": {"codigo": "GRAVE_E", "descripcion": "Compartir credenciales de acceso con otro usuario",                         "nivel": "grave"}},
+  {"model": "violations.violationtype", "pk": 13, "fields": {"codigo": "GRAVE_F", "descripcion": "Reincidir en 3 o más faltas leves en un semestre",                          "nivel": "grave"}},
+  {"model": "violations.violationtype", "pk": 14, "fields": {"codigo": "MUY_GRAVE_A", "descripcion": "Dañar gravemente la infraestructura del estacionamiento",              "nivel": "muy_grave"}},
+  {"model": "violations.violationtype", "pk": 15, "fields": {"codigo": "MUY_GRAVE_B", "descripcion": "Agresión verbal o física al personal de seguridad",                   "nivel": "muy_grave"}},
+  {"model": "violations.violationtype", "pk": 16, "fields": {"codigo": "MUY_GRAVE_C", "descripcion": "Falsificación de credenciales de acceso al estacionamiento",          "nivel": "muy_grave"}},
+  {"model": "violations.violationtype", "pk": 17, "fields": {"codigo": "MUY_GRAVE_D", "descripcion": "Conducir en estado de ebriedad o bajo efectos de sustancias",         "nivel": "muy_grave"}},
+  {"model": "violations.violationtype", "pk": 18, "fields": {"codigo": "MUY_GRAVE_E", "descripcion": "Actividades ilícitas dentro del estacionamiento",                      "nivel": "muy_grave"}},
+  {"model": "violations.violationtype", "pk": 19, "fields": {"codigo": "MUY_GRAVE_F", "descripcion": "Reincidencia grave: 2 o más faltas graves en un año",                 "nivel": "muy_grave"}}
+]

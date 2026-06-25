@@ -1,0 +1,11 @@
+[
+  {"model": "violations.sanctionrule", "pk": 1, "fields": {"nivel_falta": "leve",      "numero_reincidencia": 1, "tipo_sancion": "advertencia",           "duracion_meses": null}},
+  {"model": "violations.sanctionrule", "pk": 2, "fields": {"nivel_falta": "leve",      "numero_reincidencia": 2, "tipo_sancion": "suspension_temporal",   "duracion_meses": 1}},
+  {"model": "violations.sanctionrule", "pk": 3, "fields": {"nivel_falta": "leve",      "numero_reincidencia": 3, "tipo_sancion": "suspension_temporal",   "duracion_meses": 3}},
+  {"model": "violations.sanctionrule", "pk": 4, "fields": {"nivel_falta": "grave",     "numero_reincidencia": 1, "tipo_sancion": "suspension_temporal",   "duracion_meses": 3}},
+  {"model": "violations.sanctionrule", "pk": 5, "fields": {"nivel_falta": "grave",     "numero_reincidencia": 2, "tipo_sancion": "suspension_temporal",   "duracion_meses": 6}},
+  {"model": "violations.sanctionrule", "pk": 6, "fields": {"nivel_falta": "grave",     "numero_reincidencia": 3, "tipo_sancion": "suspension_temporal",   "duracion_meses": 12}},
+  {"model": "violations.sanctionrule", "pk": 7, "fields": {"nivel_falta": "muy_grave", "numero_reincidencia": 1, "tipo_sancion": "suspension_temporal",   "duracion_meses": 12}},
+  {"model": "violations.sanctionrule", "pk": 8, "fields": {"nivel_falta": "muy_grave", "numero_reincidencia": 2, "tipo_sancion": "suspension_temporal",   "duracion_meses": 24}},
+  {"model": "violations.sanctionrule", "pk": 9, "fields": {"nivel_falta": "muy_grave", "numero_reincidencia": 3, "tipo_sancion": "suspension_definitiva", "duracion_meses": null}}
+]
