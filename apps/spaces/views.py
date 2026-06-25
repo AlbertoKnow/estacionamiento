@@ -51,6 +51,7 @@ class ParkingLotViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, Generi
 
 class ParkingSpaceViewSet(
     mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
     mixins.CreateModelMixin,
     mixins.UpdateModelMixin,
     GenericViewSet,
