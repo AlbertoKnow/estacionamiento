@@ -31,7 +31,16 @@ class ReservationViewSet(
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        space = ParkingSpace.objects.get(id=data['space_id'])
+        user_campus = request.user.campus_asignado
+        space = ParkingSpace.objects.filter(
+            id=data['space_id'], lot__campus=user_campus
+        ).first()
+        if not space:
+            return Response(
+                {'detail': 'Espacio no encontrado en su campus.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         beneficiario = None
         if data.get('beneficiario_id'):
             beneficiario = User.objects.filter(id=data['beneficiario_id']).first()
