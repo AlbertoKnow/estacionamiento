@@ -4,7 +4,7 @@ import type { NextRequest } from 'next/server';
 const REFRESH_COOKIE = 'utp_refresh';
 const ROLE_COOKIE = 'utp_role';
 
-const FIELD_ROLES = new Set(['AGENTE', 'ALUMNO', 'DOCENTE', 'ADMINISTRATIVO', 'VISITANTE']);
+const FIELD_ROLES = new Set(['agente_seguridad', 'alumno', 'academico', 'administrativo']);
 const ADMIN_ONLY_PATHS = ['/dashboard', '/reservations', '/reports', '/spaces', '/users'];
 const AGENT_PATH = '/scan';
 
@@ -28,11 +28,11 @@ export function middleware(request: NextRequest) {
   const role = request.cookies.get(ROLE_COOKIE)?.value ?? '';
 
   if (ADMIN_ONLY_PATHS.some((p) => pathname.startsWith(p)) && FIELD_ROLES.has(role)) {
-    const dest = role === 'AGENTE' ? '/scan' : '/my-qr';
+    const dest = role === 'agente_seguridad' ? '/scan' : '/my-qr';
     return NextResponse.redirect(new URL(dest, request.url));
   }
 
-  if (pathname.startsWith(AGENT_PATH) && role !== 'AGENTE') {
+  if (pathname.startsWith(AGENT_PATH) && role !== 'agente_seguridad') {
     return NextResponse.redirect(new URL('/my-qr', request.url));
   }
 

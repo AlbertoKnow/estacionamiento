@@ -81,7 +81,7 @@ function ReportSection({
   );
 }
 
-const DIRECTOR_ROLES = ['DIRECTOR', 'RECTOR'];
+const DIRECTOR_ROLES = ['director', 'rector'];
 
 export default function ReportsPage() {
   const { user } = useAuth();

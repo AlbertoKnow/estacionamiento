@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useAuth } from '@/contexts/AuthContext';
 
-const CREATE_ROLES = ['AGENTE', 'JEFE_OPERACIONES', 'JEFE_SEGURIDAD'];
+const CREATE_ROLES = ['agente_seguridad', 'jefe_operaciones', 'jefe_seguridad'];
 
 export default function ViolationsPage() {
   const { user } = useAuth();

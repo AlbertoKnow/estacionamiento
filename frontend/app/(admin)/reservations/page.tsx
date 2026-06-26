@@ -14,7 +14,7 @@ export default function ReservationsPage() {
   const { data, isLoading } = useReservations();
   const { mutateAsync: cancel } = useCancelReservation();
   const [open, setOpen] = useState(false);
-  const canCreate = user?.rol && ['JEFE_OPERACIONES', 'DIRECTOR', 'RECTOR'].includes(user.rol);
+  const canCreate = user?.rol && ['jefe_operaciones', 'director', 'rector'].includes(user.rol);
 
   async function handleCancel(id: number) {
     try {

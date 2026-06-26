@@ -9,15 +9,15 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const ROLE_REDIRECTS: Record<string, string> = {
-  AGENTE: '/scan',
-  ALUMNO: '/my-qr',
-  DOCENTE: '/my-qr',
-  ADMINISTRATIVO: '/my-qr',
-  VISITANTE: '/my-qr',
-  JEFE_OPERACIONES: '/dashboard',
-  JEFE_SEGURIDAD: '/dashboard',
-  DIRECTOR: '/dashboard',
-  RECTOR: '/dashboard',
+  agente_seguridad: '/scan',
+  alumno: '/my-qr',
+  academico: '/my-qr',
+  administrativo: '/my-qr',
+  jefe_operaciones: '/dashboard',
+  jefe_seguridad: '/dashboard',
+  asistente_operaciones: '/dashboard',
+  director: '/dashboard',
+  rector: '/dashboard',
 };
 
 export default function LoginForm() {

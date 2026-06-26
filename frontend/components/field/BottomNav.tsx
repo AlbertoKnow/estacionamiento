@@ -18,7 +18,7 @@ const USER_ITEMS = [
 export default function BottomNav() {
   const pathname = usePathname();
   const { user } = useAuth();
-  const items = user?.rol === 'AGENTE' ? AGENT_ITEMS : USER_ITEMS;
+  const items = user?.rol === 'agente_seguridad' ? AGENT_ITEMS : USER_ITEMS;
 
   return (
     <nav className="h-16 bg-white border-t border-slate-200 flex items-center">
