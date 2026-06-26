@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import ViolationCreateForm from './ViolationCreateForm';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
