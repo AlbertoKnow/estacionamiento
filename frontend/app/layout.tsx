@@ -10,6 +10,8 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'UTP Parking',
   description: 'Sistema de estacionamiento UTP Arequipa',
+  manifest: '/manifest.json',
+  themeColor: '#1e40af',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
