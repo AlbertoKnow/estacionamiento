@@ -7,11 +7,14 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function ReservationsPage() {
+  const { user } = useAuth();
   const { data, isLoading } = useReservations();
   const { mutateAsync: cancel } = useCancelReservation();
   const [open, setOpen] = useState(false);
+  const canCreate = user?.rol && ['JEFE_OPERACIONES', 'DIRECTOR', 'RECTOR'].includes(user.rol);
 
   async function handleCancel(id: number) {
     try {
@@ -26,7 +29,9 @@ export default function ReservationsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-slate-800">Reservas</h1>
-        <Button onClick={() => setOpen(true)}>Nueva reserva</Button>
+        {canCreate && (
+          <Button onClick={() => setOpen(true)}>Nueva reserva</Button>
+        )}
       </div>
 
       {isLoading && <p className="text-slate-400">Cargando...</p>}
