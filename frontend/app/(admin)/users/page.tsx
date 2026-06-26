@@ -14,7 +14,7 @@ const ESTADO_VARIANT: Record<string, 'default' | 'secondary' | 'destructive'> = 
   SUSPENDIDO: 'destructive',
 };
 
-const ROLES = ['', 'ALUMNO', 'DOCENTE', 'ADMINISTRATIVO', 'AGENTE', 'JEFE_OPERACIONES', 'JEFE_SEGURIDAD', 'DIRECTOR', 'RECTOR'];
+const ROLES = ['', 'alumno', 'academico', 'administrativo', 'agente_seguridad', 'asistente_operaciones', 'jefe_operaciones', 'jefe_seguridad', 'director', 'rector'];
 
 export default function UsersPage() {
   const [search, setSearch] = useState('');
