@@ -19,6 +19,9 @@ export function useScan() {
   const scan = useCallback(async (qr_token: string, tipo: 'entry' | 'exit') => {
     const timestamp = new Date();
     if (!navigator.onLine) {
+      // Persist to IndexedDB for later sync
+      const { enqueueScan } = await import('@/lib/offline-queue');
+      await enqueueScan({ qr_token, tipo, timestamp: timestamp.toISOString() });
       const result: ScanResultData = { status: 'offline', tipo, timestamp };
       setLastResult(result);
       setHistory((prev) => [result, ...prev].slice(0, 10));
