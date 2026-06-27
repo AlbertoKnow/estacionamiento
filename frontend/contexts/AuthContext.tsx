@@ -35,7 +35,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     refreshAccessToken()
-      .then(() => api.get<AuthUser>('/auth/me/').then((r) => setUser(r.data)))
+      .then(() => api.get<AuthUser>('/users/me/').then((r) => setUser(r.data)))
       .catch(() => setUser(null))
       .finally(() => setIsLoading(false));
   }, []);

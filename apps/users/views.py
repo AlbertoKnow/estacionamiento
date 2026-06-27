@@ -12,7 +12,6 @@ from .models import User, Vehicle, Role
 from .permissions import IsJefeOperacionesOrAbove, IsOperativoOrAbove
 from .serializers import (
     LoginSerializer,
-    UserBasicSerializer,
     UserSerializer,
     UserCreateSerializer,
     UserUpdateSerializer,
@@ -31,7 +30,7 @@ class LoginView(APIView):
         return Response({
             'access': str(refresh.access_token),
             'refresh': str(refresh),
-            'user': UserBasicSerializer(user).data,
+            'user': UserSerializer(user).data,
         })
 
 
