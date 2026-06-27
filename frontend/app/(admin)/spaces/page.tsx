@@ -4,10 +4,10 @@ import { useSpacesByLot } from '@/hooks/useSpaces';
 import { Badge } from '@/components/ui/badge';
 
 const ESTADO_CONFIG: Record<string, { label: string; cls: string }> = {
-  LIBRE: { label: 'Libre', cls: 'bg-green-100 text-green-700' },
-  OCUPADO: { label: 'Ocupado', cls: 'bg-red-100 text-red-700' },
-  RESERVADO: { label: 'Reservado', cls: 'bg-blue-100 text-blue-700' },
-  MANTENIMIENTO: { label: 'Mantenimiento', cls: 'bg-slate-100 text-slate-600' },
+  libre: { label: 'Libre', cls: 'bg-green-100 text-green-700' },
+  ocupado: { label: 'Ocupado', cls: 'bg-red-100 text-red-700' },
+  reservado: { label: 'Reservado', cls: 'bg-blue-100 text-blue-700' },
+  mantenimiento: { label: 'Mantenimiento', cls: 'bg-slate-100 text-slate-600' },
 };
 
 export default function SpacesPage() {
@@ -27,14 +27,14 @@ export default function SpacesPage() {
           </div>
           <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2">
             {lot.spaces?.map((space) => {
-              const cfg = ESTADO_CONFIG[space.estado] ?? ESTADO_CONFIG['LIBRE'];
+              const cfg = ESTADO_CONFIG[space.estado] ?? ESTADO_CONFIG['libre'];
               return (
                 <div
                   key={space.id}
                   className={`rounded-lg p-2 text-center text-xs font-medium ${cfg.cls}`}
-                  title={`${space.codigo} — ${space.tipo}`}
+                  title={`${space.numero} — ${space.tipo}`}
                 >
-                  <p className="font-bold">{space.codigo}</p>
+                  <p className="font-bold">{space.numero}</p>
                   <p className="opacity-70">{space.tipo.slice(0, 3)}</p>
                 </div>
               );

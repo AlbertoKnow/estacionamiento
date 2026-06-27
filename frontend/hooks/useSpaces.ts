@@ -4,16 +4,18 @@ import { useAuth } from '@/contexts/AuthContext';
 
 export interface SpaceItem {
   id: number;
-  codigo: string;
+  numero: string;
   tipo: string;
   estado: string;
-  nivel: string;
 }
 
-interface LotWithSpaces {
+interface Lot {
   id: number;
   nombre: string;
-  nivel: string;
+  nivel: number;
+}
+
+export interface LotWithSpaces extends Lot {
   spaces: SpaceItem[];
 }
 
@@ -24,8 +26,19 @@ export function useSpacesByLot() {
   return useQuery({
     queryKey: ['spaces', campusId],
     queryFn: async () => {
-      const lotsRes = await api.get<LotWithSpaces[]>(`/spaces/campus/${campusId}/lots/`);
-      return lotsRes.data;
+      const lotsRes = await api.get<Lot[]>(`/campus/${campusId}/lots/`);
+      const lots = lotsRes.data;
+
+      const lotsWithSpaces = await Promise.all(
+        lots.map(async (lot) => {
+          const spacesRes = await api.get<SpaceItem[]>(
+            `/campus/${campusId}/lots/${lot.id}/spaces/`
+          );
+          return { ...lot, spaces: spacesRes.data };
+        })
+      );
+
+      return lotsWithSpaces;
     },
     enabled: !!campusId,
   });

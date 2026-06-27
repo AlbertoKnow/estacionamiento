@@ -30,15 +30,19 @@ class UserBasicSerializer(serializers.ModelSerializer):
         fields = ('id', 'codigo_institucional', 'nombre', 'apellido', 'email', 'rol', 'campus_id', 'estado')
 
 
+class CampusNestedSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    nombre = serializers.CharField()
+
+
 class UserSerializer(serializers.ModelSerializer):
-    campus_id = serializers.PrimaryKeyRelatedField(source='campus_asignado', read_only=True)
-    campus_nombre = serializers.CharField(source='campus_asignado.nombre', read_only=True)
+    campus_asignado = CampusNestedSerializer(read_only=True)
 
     class Meta:
         model = User
         fields = (
             'id', 'codigo_institucional', 'email', 'nombre', 'apellido',
-            'rol', 'campus_id', 'campus_nombre', 'estado', 'suspension_hasta', 'created_at',
+            'rol', 'campus_asignado', 'estado', 'suspension_hasta', 'created_at',
         )
         read_only_fields = ('id', 'created_at')
 
