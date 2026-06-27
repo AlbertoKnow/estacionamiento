@@ -1,5 +1,6 @@
 import openpyxl
 from django.db import transaction
+from django.db.models import Count, Q
 from rest_framework import mixins, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -13,6 +14,7 @@ from .permissions import IsJefeOperacionesOrAbove, IsOperativoOrAbove
 from .serializers import (
     LoginSerializer,
     UserSerializer,
+    UserListSerializer,
     UserCreateSerializer,
     UserUpdateSerializer,
     VehicleSerializer,
@@ -81,17 +83,34 @@ class UserViewSet(
 
     def get_queryset(self):
         user = self.request.user
-        qs = User.objects.select_related('campus_asignado')
-        if user.rol == Role.RECTOR:
-            return qs.all()
-        return qs.filter(campus_asignado=user.campus_asignado)
+        qs = User.objects.select_related('campus_asignado').annotate(
+            vehiculos=Count('vehicles', filter=Q(vehicles__activo=True), distinct=True),
+            sanciones_activas=Count('sanctions', filter=Q(sanctions__estado='activa'), distinct=True),
+        )
+        if user.rol != Role.RECTOR:
+            qs = qs.filter(campus_asignado=user.campus_asignado)
+
+        rol = self.request.query_params.get('rol')
+        estado = self.request.query_params.get('estado')
+        search = self.request.query_params.get('search')
+        if rol:
+            qs = qs.filter(rol=rol)
+        if estado:
+            qs = qs.filter(estado=estado)
+        if search:
+            qs = qs.filter(
+                Q(nombre__icontains=search) |
+                Q(apellido__icontains=search) |
+                Q(codigo_institucional__icontains=search)
+            )
+        return qs
 
     def get_serializer_class(self):
         if self.action == 'create':
             return UserCreateSerializer
         if self.action in ('update', 'partial_update'):
             return UserUpdateSerializer
-        return UserSerializer
+        return UserListSerializer
 
 
 class VehicleViewSet(

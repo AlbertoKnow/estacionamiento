@@ -29,7 +29,7 @@ export function useOccupancy() {
   return useQuery({
     queryKey: ['occupancy', campusId],
     queryFn: () =>
-      api.get<OccupancyData>(`/spaces/campus/${campusId}/occupancy/`).then((r) => r.data),
+      api.get<OccupancyData>(`/campus/${campusId}/occupancy/`).then((r) => r.data),
     enabled: !!campusId,
     refetchInterval: 15_000,
     staleTime: 10_000,

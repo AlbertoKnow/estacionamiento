@@ -9,9 +9,9 @@ import {
 } from '@/components/ui/table';
 
 const ESTADO_VARIANT: Record<string, 'default' | 'secondary' | 'destructive'> = {
-  ACTIVO: 'default',
-  INACTIVO: 'secondary',
-  SUSPENDIDO: 'destructive',
+  activo: 'default',
+  inactivo: 'secondary',
+  suspendido: 'destructive',
 };
 
 const ROLES = ['', 'alumno', 'academico', 'administrativo', 'agente_seguridad', 'asistente_operaciones', 'jefe_operaciones', 'jefe_seguridad', 'director', 'rector'];

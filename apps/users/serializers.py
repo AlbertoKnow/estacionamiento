@@ -47,6 +47,19 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'created_at')
 
 
+class UserListSerializer(serializers.ModelSerializer):
+    campus_asignado = CampusNestedSerializer(read_only=True)
+    sanciones_activas = serializers.IntegerField(read_only=True, default=0)
+    vehiculos = serializers.IntegerField(read_only=True, default=0)
+
+    class Meta:
+        model = User
+        fields = (
+            'id', 'codigo_institucional', 'email', 'nombre', 'apellido',
+            'rol', 'campus_asignado', 'estado', 'sanciones_activas', 'vehiculos',
+        )
+
+
 class UserCreateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=8)
 
