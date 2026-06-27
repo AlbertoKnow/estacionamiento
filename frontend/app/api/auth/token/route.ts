@@ -40,9 +40,25 @@ export async function POST(request: Request) {
   return response;
 }
 
-// DELETE → clear the cookie (logout)
+// DELETE → blacklist refresh token server-side, then clear cookies (logout)
 export async function DELETE() {
+  const cookieStore = cookies();
+  const refresh = cookieStore.get(COOKIE_NAME)?.value;
+
+  if (refresh) {
+    try {
+      await fetch(`${API_URL}/auth/logout/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refresh }),
+      });
+    } catch {
+      // Fire-and-forget — proceed with local cleanup even if backend fails
+    }
+  }
+
   const response = NextResponse.json({ ok: true });
   response.cookies.delete(COOKIE_NAME);
+  response.cookies.delete('utp_role');
   return response;
 }

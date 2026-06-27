@@ -5,7 +5,7 @@ const REFRESH_COOKIE = 'utp_refresh';
 const ROLE_COOKIE = 'utp_role';
 
 const FIELD_ROLES = new Set(['agente_seguridad', 'alumno', 'academico', 'administrativo']);
-const ADMIN_ONLY_PATHS = ['/dashboard', '/reservations', '/reports', '/spaces', '/users'];
+const ADMIN_ONLY_PATHS = ['/dashboard', '/reservations', '/reports', '/spaces', '/users', '/violations'];
 const AGENT_PATH = '/scan';
 
 export function middleware(request: NextRequest) {
@@ -15,7 +15,10 @@ export function middleware(request: NextRequest) {
     pathname.startsWith('/login') ||
     pathname.startsWith('/api/') ||
     pathname.startsWith('/_next/') ||
-    pathname.startsWith('/icons/')
+    pathname.startsWith('/icons/') ||
+    pathname === '/manifest.json' ||
+    pathname === '/favicon.ico' ||
+    /\/(sw\.js|workbox-[^/]+\.js)$/.test(pathname)
   ) {
     return NextResponse.next();
   }

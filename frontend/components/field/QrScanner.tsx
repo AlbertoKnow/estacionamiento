@@ -8,32 +8,33 @@ interface Props {
   paused?: boolean;
 }
 
-export default function QrScanner({ onScan, paused }: Props) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const scannerRef = useRef<Html5QrcodeScanner | null>(null);
+export default function QrScanner({ onScan, paused = false }: Props) {
+  const pausedRef = useRef(paused);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    pausedRef.current = paused;
+  }, [paused]);
+
+  useEffect(() => {
     const scanner = new Html5QrcodeScanner(
       'qr-reader',
-      { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1 },
+      { fps: 10, qrbox: { width: 250, height: 250 } },
       false
     );
-    scannerRef.current = scanner;
+
     scanner.render(
-      (text) => {
-        if (!paused) onScan(text);
+      (decodedText) => {
+        if (!pausedRef.current) {
+          onScan(decodedText);
+        }
       },
       () => {}
     );
+
     return () => {
       scanner.clear().catch(() => {});
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [onScan]);
 
-  return (
-    <div className="w-full">
-      <div ref={containerRef} id="qr-reader" className="w-full" />
-    </div>
-  );
+  return <div id="qr-reader" className="w-full" />;
 }

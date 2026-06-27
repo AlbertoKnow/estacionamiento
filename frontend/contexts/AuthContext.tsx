@@ -1,13 +1,13 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
 import {
   setAccessToken,
   clearAccessToken,
   storeRefreshCookie,
   refreshAccessToken,
-  clearRefreshCookie,
 } from '@/lib/auth';
 
 export interface AuthUser {
@@ -31,6 +31,7 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     refreshAccessToken()
@@ -51,16 +52,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const logout = useCallback(async () => {
-    try {
-      const { getAccessToken } = await import('@/lib/auth');
-      const token = getAccessToken();
-      if (token) await api.post('/auth/logout/', { refresh: token });
-    } catch {}
-    await clearRefreshCookie();
+    await fetch('/api/auth/token', { method: 'DELETE' });
     clearAccessToken();
-    document.cookie = 'utp_role=; path=/; max-age=0';
-    setUser(null);
-  }, []);
+    router.push('/login');
+  }, [router]);
 
   return (
     <AuthContext.Provider value={{ user, isLoading, login, logout }}>
