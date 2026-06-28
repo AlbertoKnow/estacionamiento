@@ -54,7 +54,7 @@ export default function ReservationsPage() {
                 </p>
               )}
             </div>
-            {r.estado === 'ACTIVA' && (
+            {r.estado === 'activa' && (
               <Button
                 variant="outline"
                 size="sm"

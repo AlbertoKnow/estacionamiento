@@ -10,7 +10,7 @@ export interface Reservation {
   inicio: string;
   fin: string;
   motivo: string;
-  estado: 'ACTIVA' | 'CANCELADA' | 'EXPIRADA';
+  estado: 'activa' | 'cancelada' | 'vencida';
 }
 
 export function useReservations() {

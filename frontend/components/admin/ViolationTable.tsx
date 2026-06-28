@@ -20,9 +20,10 @@ const NIVEL_VARIANT: Record<string, 'default' | 'secondary' | 'destructive'> = {
 };
 
 const ESTADO_VARIANT: Record<string, 'default' | 'secondary' | 'outline' | 'destructive'> = {
-  PENDIENTE: 'outline',
-  CONFIRMADA: 'destructive',
-  ANULADA: 'secondary',
+  pendiente: 'outline',
+  confirmada: 'destructive',
+  anulada: 'secondary',
+  apelada: 'secondary',
 };
 
 export default function ViolationTable() {
@@ -32,7 +33,7 @@ export default function ViolationTable() {
   return (
     <div className="space-y-4">
       <div className="flex gap-2">
-        {['', 'PENDIENTE', 'CONFIRMADA', 'ANULADA'].map((s) => (
+        {['', 'pendiente', 'confirmada', 'anulada'].map((s) => (
           <button
             key={s}
             onClick={() => setEstado(s)}

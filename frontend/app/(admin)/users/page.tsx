@@ -47,9 +47,9 @@ export default function UsersPage() {
           className="h-10 px-3 border border-input rounded-md text-sm bg-background"
         >
           <option value="">Todos los estados</option>
-          <option value="ACTIVO">Activo</option>
-          <option value="SUSPENDIDO">Suspendido</option>
-          <option value="INACTIVO">Inactivo</option>
+          <option value="activo">Activo</option>
+          <option value="suspendido">Suspendido</option>
+          <option value="inactivo">Inactivo</option>
         </select>
       </div>
       <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">

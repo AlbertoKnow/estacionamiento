@@ -13,7 +13,7 @@ export interface Violation {
   user: { id: number; nombre: string; apellido: string; codigo_institucional: string };
   vehicle: { placa: string } | null;
   tipo_falta: ViolationType;
-  estado: 'PENDIENTE' | 'CONFIRMADA' | 'ANULADA';
+  estado: 'pendiente' | 'confirmada' | 'anulada' | 'apelada';
   fecha: string;
   descripcion: string;
   sancion_propuesta?: { tipo: string; duracion_meses: number | null };
