@@ -3,7 +3,7 @@ import api from './api';
 
 export interface PendingScan {
   id?: number;
-  qr_token: string;
+  token: string;
   tipo: 'entry' | 'exit';
   timestamp: string;
   retries: number;
@@ -24,7 +24,7 @@ class OfflineQueueDB extends Dexie {
 export const db = new OfflineQueueDB();
 
 export async function enqueueScan(
-  data: Pick<PendingScan, 'qr_token' | 'tipo' | 'timestamp'>
+  data: Pick<PendingScan, 'token' | 'tipo' | 'timestamp'>
 ): Promise<void> {
   await db.pending_scans.add({ ...data, retries: 0, status: 'pending' });
 }
@@ -53,7 +53,7 @@ export async function syncPending(): Promise<{ synced: number; failed: number }>
   try {
     const payload = pending.map((s) => ({
       id: String(s.id),
-      qr_token: s.qr_token,
+      token: s.token,
       tipo: s.tipo,
       timestamp: s.timestamp,
     }));

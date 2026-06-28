@@ -3,7 +3,7 @@ import api from '@/lib/api';
 
 export interface ViolationType {
   id: number;
-  nombre: string;
+  codigo: string;
   nivel: 'leve' | 'grave' | 'muy_grave';
   descripcion: string;
 }

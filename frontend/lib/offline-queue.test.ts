@@ -10,7 +10,7 @@ describe('offline-queue', () => {
   });
 
   it('enqueues a scan record', async () => {
-    await enqueueScan({ qr_token: 'token-abc', tipo: 'entry', timestamp: new Date().toISOString() });
+    await enqueueScan({ token: 'token-abc', tipo: 'entry', timestamp: new Date().toISOString() });
     const count = await getPendingCount();
     expect(count).toBe(1);
   });
@@ -23,7 +23,7 @@ describe('offline-queue', () => {
   it('clearFailed removes failed records', async () => {
     const { db } = await import('./offline-queue');
     await db.pending_scans.add({
-      qr_token: 'tok',
+      token: 'tok',
       tipo: 'entry',
       timestamp: new Date().toISOString(),
       retries: 3,

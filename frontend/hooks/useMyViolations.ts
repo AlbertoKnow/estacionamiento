@@ -3,7 +3,7 @@ import api from '@/lib/api';
 
 export interface ViolationItem {
   id: number;
-  tipo_falta: { nombre: string; nivel: 'leve' | 'grave' | 'muy_grave' };
+  tipo_falta: { codigo: string; descripcion: string; nivel: 'leve' | 'grave' | 'muy_grave' };
   fecha: string;
   estado: 'PENDIENTE' | 'CONFIRMADA' | 'ANULADA';
   descripcion: string;
