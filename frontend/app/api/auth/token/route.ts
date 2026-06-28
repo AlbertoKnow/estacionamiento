@@ -26,9 +26,18 @@ export async function GET() {
   return NextResponse.json({ access: data.access });
 }
 
-// POST → store refresh token in httpOnly cookie
+// POST → store refresh token (and optionally role) in httpOnly cookies
 export async function POST(request: Request) {
-  const { refresh } = await request.json();
+  let body: { refresh?: string; role?: string };
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ detail: 'Invalid body' }, { status: 400 });
+  }
+  const { refresh, role } = body;
+  if (!refresh) {
+    return NextResponse.json({ detail: 'refresh required' }, { status: 400 });
+  }
   const response = NextResponse.json({ ok: true });
   response.cookies.set(COOKIE_NAME, refresh, {
     httpOnly: true,
@@ -37,6 +46,15 @@ export async function POST(request: Request) {
     maxAge: COOKIE_MAX_AGE,
     path: '/',
   });
+  if (role) {
+    response.cookies.set('utp_role', role, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: COOKIE_MAX_AGE,
+      path: '/',
+    });
+  }
   return response;
 }
 

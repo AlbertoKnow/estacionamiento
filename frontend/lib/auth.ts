@@ -10,11 +10,11 @@ export const clearAccessToken = (): void => {
   _accessToken = null;
 };
 
-export async function storeRefreshCookie(refresh: string): Promise<void> {
+export async function storeRefreshCookie(refresh: string, role?: string): Promise<void> {
   await fetch('/api/auth/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ refresh }),
+    body: JSON.stringify({ refresh, ...(role ? { role } : {}) }),
   });
 }
 

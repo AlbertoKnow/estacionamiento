@@ -46,15 +46,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       { codigo_institucional: codigo, password }
     );
     setAccessToken(res.data.access);
-    await storeRefreshCookie(res.data.refresh);
-    document.cookie = `utp_role=${res.data.user.rol}; path=/; SameSite=Lax`;
+    await storeRefreshCookie(res.data.refresh, res.data.user.rol);
     setUser(res.data.user);
   }, []);
 
   const logout = useCallback(async () => {
-    await fetch('/api/auth/token', { method: 'DELETE' });
-    clearAccessToken();
-    router.push('/login');
+    try {
+      await fetch('/api/auth/token', { method: 'DELETE' });
+    } catch {
+      // fire-and-forget
+    } finally {
+      clearAccessToken();
+      setUser(null);
+      router.push('/login');
+    }
   }, [router]);
 
   return (
