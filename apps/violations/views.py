@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework import status, mixins
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -5,9 +6,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
-from apps.users.models import Role
+from apps.users.models import Role, UserState
 from apps.users.permissions import IsOperativoOrAbove, IsJefeOperacionesOrAbove
-from .models import Violation, ViolationType, ViolationState
+from .models import Violation, ViolationType, ViolationState, Sanction, SanctionState
 from .sanctions import apply_sanction
 from .serializers import ViolationCreateSerializer, ViolationSerializer
 
@@ -94,8 +95,20 @@ class ViolationViewSet(
                 {'detail': 'No se puede anular esta violación.'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        violation.estado = ViolationState.ANULADA
-        violation.save(update_fields=['estado'])
+        with transaction.atomic():
+            violation.estado = ViolationState.ANULADA
+            violation.save(update_fields=['estado'])
+            try:
+                sanction = violation.sanction
+                sanction.estado = SanctionState.ANULADA
+                sanction.save(update_fields=['estado'])
+                user = violation.user
+                if user.estado == UserState.SUSPENDIDO:
+                    user.estado = UserState.ACTIVO
+                    user.suspension_hasta = None
+                    user.save(update_fields=['estado', 'suspension_hasta'])
+            except Sanction.DoesNotExist:
+                pass
         return Response({'detail': 'Violación anulada.'})
 
 

@@ -10,6 +10,24 @@ class SanctionProposalSerializer(serializers.Serializer):
     numero_reincidencia = serializers.IntegerField()
 
 
+class ViolationUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'nombre', 'apellido', 'codigo_institucional')
+
+
+class ViolationVehicleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vehicle
+        fields = ('id', 'placa')
+
+
+class ViolationTypeNestedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ViolationType
+        fields = ('id', 'codigo', 'descripcion', 'nivel')
+
+
 class ViolationCreateSerializer(serializers.Serializer):
     user_id = serializers.IntegerField()
     vehicle_id = serializers.IntegerField(required=False, allow_null=True)
@@ -29,15 +47,16 @@ class ViolationCreateSerializer(serializers.Serializer):
 
 
 class ViolationSerializer(serializers.ModelSerializer):
-    tipo_falta_codigo = serializers.CharField(source='tipo_falta.codigo', read_only=True)
-    tipo_falta_nivel = serializers.CharField(source='tipo_falta.nivel', read_only=True)
+    user = ViolationUserSerializer(read_only=True)
+    vehicle = ViolationVehicleSerializer(read_only=True)
+    tipo_falta = ViolationTypeNestedSerializer(read_only=True)
     registrado_por_nombre = serializers.SerializerMethodField()
     sancion_propuesta = serializers.SerializerMethodField()
 
     class Meta:
         model = Violation
         fields = (
-            'id', 'user', 'vehicle', 'campus', 'tipo_falta_codigo', 'tipo_falta_nivel',
+            'id', 'user', 'vehicle', 'campus', 'tipo_falta',
             'descripcion', 'fecha', 'estado', 'registrado_por_nombre', 'sancion_propuesta',
         )
 

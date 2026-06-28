@@ -41,6 +41,12 @@ class ReservationViewSet(
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
+        if space.estado != SpaceState.LIBRE:
+            return Response(
+                {'detail': 'El espacio no está disponible.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         beneficiario = None
         if data.get('beneficiario_id'):
             beneficiario = User.objects.filter(id=data['beneficiario_id']).first()
