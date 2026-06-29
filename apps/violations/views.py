@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
 from apps.users.models import Role, UserState
-from apps.users.permissions import IsOperativoOrAbove, IsJefeSeguridad
+from apps.users.permissions import IsOperativoOrAbove, IsJefeOperacionesOrAbove
 from .models import Violation, ViolationType, ViolationState, Sanction, SanctionState
 from .sanctions import apply_sanction
 from .serializers import ViolationCreateSerializer, ViolationSerializer, ViolationTypeNestedSerializer
@@ -24,7 +24,7 @@ class ViolationViewSet(
         if self.action == 'create':
             return [IsOperativoOrAbove()]
         if self.action in ('confirm', 'annul'):
-            return [IsJefeSeguridad()]
+            return [IsJefeOperacionesOrAbove()]
         return [IsAuthenticated()]
 
     def get_queryset(self):

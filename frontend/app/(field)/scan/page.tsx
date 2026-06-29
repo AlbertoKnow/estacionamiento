@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { useScan } from '@/hooks/useScan';
+import { useSpacesByLot } from '@/hooks/useSpaces';
 import ScanResult from '@/components/field/ScanResult';
 import ScanHistory from '@/components/field/ScanHistory';
 
@@ -11,6 +12,7 @@ const QrScanner = dynamic(() => import('@/components/field/QrScanner'), { ssr: f
 
 export default function ScanPage() {
   const { scan, lastResult, history } = useScan();
+  const { data: lots } = useSpacesByLot();
   const [paused, setPaused] = useState(false);
   const [tipo, setTipo] = useState<'entry' | 'exit'>('entry');
 
@@ -53,6 +55,24 @@ export default function ScanPage() {
 
       {lastResult && <ScanResult result={lastResult} onDismiss={handleDismiss} />}
       <ScanHistory items={history} />
+
+      {lots && lots.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Espacios disponibles</p>
+          {lots.map((lot) => {
+            const libres = lot.spaces.filter((s) => s.estado === 'libre').length;
+            const total = lot.spaces.length;
+            return (
+              <div key={lot.id} className="flex items-center justify-between bg-white rounded-lg border border-slate-200 px-3 py-2">
+                <span className="text-sm font-medium text-slate-700">{lot.nombre}</span>
+                <span className={`text-sm font-bold ${libres === 0 ? 'text-red-600' : 'text-green-700'}`}>
+                  {libres}/{total} libres
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

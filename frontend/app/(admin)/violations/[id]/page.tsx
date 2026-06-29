@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
-const CONFIRM_ROLES = ['jefe_operaciones', 'jefe_seguridad', 'director', 'rector'];
+const CONFIRM_ROLES = ['jefe_operaciones', 'director', 'rector'];
 
 export default function ViolationDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);

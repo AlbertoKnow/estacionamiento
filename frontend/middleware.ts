@@ -31,9 +31,6 @@ export function middleware(request: NextRequest) {
   const role = request.cookies.get(ROLE_COOKIE)?.value ?? '';
 
   if (ADMIN_ONLY_PATHS.some((p) => pathname.startsWith(p)) && FIELD_ROLES.has(role)) {
-    if (role === 'agente_seguridad' && pathname.startsWith('/violations')) {
-      return NextResponse.next();
-    }
     const dest = role === 'agente_seguridad' ? '/scan' : '/my-qr';
     return NextResponse.redirect(new URL(dest, request.url));
   }

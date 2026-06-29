@@ -23,11 +23,11 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, roles: ['asistente_operaciones', 'jefe_operaciones', 'jefe_seguridad', 'director', 'rector'] },
-  { href: '/violations', label: 'Infracciones', icon: AlertTriangle, roles: ['agente_seguridad', 'asistente_operaciones', 'jefe_operaciones', 'jefe_seguridad', 'director', 'rector'] },
+  { href: '/violations', label: 'Infracciones', icon: AlertTriangle, roles: ['asistente_operaciones', 'jefe_operaciones', 'jefe_seguridad', 'director', 'rector'] },
   { href: '/reservations', label: 'Reservas', icon: CalendarClock, roles: ['jefe_operaciones', 'director', 'rector'] },
   { href: '/reports', label: 'Reportes', icon: FileBarChart, roles: ['jefe_seguridad', 'jefe_operaciones', 'director', 'rector'] },
-  { href: '/spaces', label: 'Espacios', icon: ParkingSquare, roles: ['director', 'rector'] },
-  { href: '/users', label: 'Usuarios', icon: Users, roles: ['director', 'rector'] },
+  { href: '/spaces', label: 'Espacios', icon: ParkingSquare, roles: ['jefe_operaciones', 'jefe_seguridad', 'director', 'rector'] },
+  { href: '/users', label: 'Usuarios', icon: Users, roles: ['jefe_operaciones', 'jefe_seguridad', 'director', 'rector'] },
 ];
 
 export default function Sidebar() {
