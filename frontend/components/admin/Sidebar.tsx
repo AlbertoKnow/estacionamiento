@@ -11,6 +11,7 @@ import {
   ParkingSquare,
   Users,
   LogOut,
+  X,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -30,7 +31,11 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/users', label: 'Usuarios', icon: Users, roles: ['jefe_operaciones', 'jefe_seguridad', 'director', 'rector'] },
 ];
 
-export default function Sidebar() {
+interface SidebarProps {
+  onClose?: () => void;
+}
+
+export default function Sidebar({ onClose }: SidebarProps) {
   const pathname = usePathname();
   const { user, logout } = useAuth();
   const router = useRouter();
@@ -47,9 +52,20 @@ export default function Sidebar() {
 
   return (
     <aside className="w-64 bg-white border-r border-slate-200 flex flex-col h-full">
-      <div className="p-5 border-b border-slate-100">
-        <p className="font-bold text-blue-800 text-lg">UTP Parking</p>
-        <p className="text-xs text-slate-400">Arequipa — Sótano 2 y 3</p>
+      <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+        <div>
+          <p className="font-bold text-blue-800 text-lg">UTP Parking</p>
+          <p className="text-xs text-slate-400">Arequipa — Sótano 2 y 3</p>
+        </div>
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="p-1 rounded-md text-slate-400 hover:text-slate-600 hover:bg-slate-100 lg:hidden"
+            aria-label="Cerrar menú"
+          >
+            <X size={18} />
+          </button>
+        )}
       </div>
       <nav className="flex-1 p-3 space-y-1">
         {visibleItems.map(({ href, label, icon: Icon }) => {
@@ -58,6 +74,7 @@ export default function Sidebar() {
             <Link
               key={href}
               href={href}
+              onClick={onClose}
               className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                 active
                   ? 'bg-blue-50 text-blue-800'

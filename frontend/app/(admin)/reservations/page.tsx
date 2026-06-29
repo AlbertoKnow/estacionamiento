@@ -27,8 +27,8 @@ export default function ReservationsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-slate-800">Reservas</h1>
+      <div className="flex items-center justify-between gap-3">
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-800">Reservas</h1>
         {canCreate && (
           <Button onClick={() => setOpen(true)}>Nueva reserva</Button>
         )}
@@ -38,7 +38,7 @@ export default function ReservationsPage() {
 
       <div className="space-y-3">
         {data?.map((r) => (
-          <div key={r.id} className="bg-white border border-slate-200 rounded-xl p-4 flex items-start justify-between gap-4">
+          <div key={r.id} className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-start justify-between gap-3">
             <div className="space-y-1 text-sm">
               <div className="flex items-center gap-2">
                 <p className="font-semibold text-slate-800">{r.space.codigo} — {r.space.tipo}</p>
@@ -72,7 +72,7 @@ export default function ReservationsPage() {
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
+        <DialogContent className="w-[95vw] max-w-lg">
           <DialogHeader>
             <DialogTitle>Nueva reserva</DialogTitle>
           </DialogHeader>

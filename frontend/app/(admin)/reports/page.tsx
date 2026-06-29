@@ -59,7 +59,7 @@ function ReportSection({
           </div>
         </div>
       )}
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3">
         <div className="flex gap-2">
           {(['xlsx', 'pdf'] as Format[]).map((f) => (
             <button
@@ -73,7 +73,7 @@ function ReportSection({
             </button>
           ))}
         </div>
-        <Button onClick={handle} disabled={loading} size="sm">
+        <Button onClick={handle} disabled={loading} size="sm" className="w-full sm:w-auto">
           {loading ? 'Generando...' : 'Descargar'}
         </Button>
       </div>
@@ -90,7 +90,7 @@ export default function ReportsPage() {
 
   return (
     <div className="space-y-6 max-w-2xl">
-      <h1 className="text-2xl font-bold text-slate-800">Reportes</h1>
+      <h1 className="text-xl sm:text-2xl font-bold text-slate-800">Reportes</h1>
       <ReportSection
         title="Reporte de Ocupación"
         url="/reports/occupancy/"

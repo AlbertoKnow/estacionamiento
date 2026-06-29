@@ -24,10 +24,10 @@ export default function UsersPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-slate-800">Usuarios</h1>
-      <div className="flex flex-wrap gap-3">
+      <h1 className="text-xl sm:text-2xl font-bold text-slate-800">Usuarios</h1>
+      <div className="flex flex-wrap gap-2">
         <Input
-          className="w-56"
+          className="w-full sm:w-56"
           placeholder="Buscar por nombre o código..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -35,7 +35,7 @@ export default function UsersPage() {
         <select
           value={rol}
           onChange={(e) => setRol(e.target.value)}
-          className="h-10 px-3 border border-input rounded-md text-sm bg-background"
+          className="h-10 px-3 border border-input rounded-md text-sm bg-background flex-1 sm:flex-none"
         >
           {ROLES.map((r) => (
             <option key={r} value={r}>{r || 'Todos los roles'}</option>
@@ -44,7 +44,7 @@ export default function UsersPage() {
         <select
           value={estado}
           onChange={(e) => setEstado(e.target.value)}
-          className="h-10 px-3 border border-input rounded-md text-sm bg-background"
+          className="h-10 px-3 border border-input rounded-md text-sm bg-background flex-1 sm:flex-none"
         >
           <option value="">Todos los estados</option>
           <option value="activo">Activo</option>
@@ -53,6 +53,7 @@ export default function UsersPage() {
         </select>
       </div>
       <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <div className="overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
@@ -102,6 +103,7 @@ export default function UsersPage() {
             ))}
           </TableBody>
         </Table>
+        </div>
       </div>
     </div>
   );

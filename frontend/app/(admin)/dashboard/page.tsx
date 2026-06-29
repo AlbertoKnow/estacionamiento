@@ -25,11 +25,11 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-slate-800">Ocupación en tiempo real</h1>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-800">Ocupación en tiempo real</h1>
         {updatedAgo !== null && (
           <p className="text-xs text-slate-400">
-            Actualizado hace {updatedAgo}s · se actualiza cada 15s
+            Actualizado hace {updatedAgo}s · cada 15s
           </p>
         )}
       </div>

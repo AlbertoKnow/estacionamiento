@@ -31,7 +31,7 @@ export default function QrDisplay() {
   return (
     <div className="flex flex-col items-center gap-4 p-4">
       <div className="bg-white p-4 rounded-2xl shadow-md border border-slate-100">
-        <QRCodeSVG value={data.token} size={240} level="M" />
+        <QRCodeSVG value={data.token} size={260} level="M" className="w-full h-auto max-w-xs" />
       </div>
       <div className="text-center">
         <p className="text-xl font-bold text-slate-800">

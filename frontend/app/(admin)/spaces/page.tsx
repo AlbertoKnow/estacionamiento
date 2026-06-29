@@ -17,7 +17,7 @@ export default function SpacesPage() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-bold text-slate-800">Espacios de estacionamiento</h1>
+      <h1 className="text-xl sm:text-2xl font-bold text-slate-800">Espacios</h1>
       {data?.map((lot) => (
         <div key={lot.id} className="space-y-3">
           <div className="flex items-center gap-2">
@@ -25,7 +25,7 @@ export default function SpacesPage() {
             <Badge variant="outline">Nivel {lot.nivel}</Badge>
             <span className="text-sm text-slate-400">{lot.spaces?.length ?? 0} espacios</span>
           </div>
-          <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2">
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2">
             {lot.spaces?.map((space) => {
               const cfg = ESTADO_CONFIG[space.estado] ?? ESTADO_CONFIG['libre'];
               return (

@@ -64,7 +64,7 @@ export default function ViolationDetailPage({ params }: { params: Promise<{ id: 
       </div>
 
       <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-3 text-sm">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <p className="text-slate-400">Usuario</p>
             <p className="font-medium">{v.user.nombre} {v.user.apellido}</p>

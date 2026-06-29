@@ -32,7 +32,7 @@ export default function ViolationTable() {
 
   return (
     <div className="space-y-4">
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
         {['', 'pendiente', 'confirmada', 'anulada'].map((s) => (
           <button
             key={s}
@@ -46,6 +46,7 @@ export default function ViolationTable() {
         ))}
       </div>
       <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <div className="overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
@@ -106,6 +107,7 @@ export default function ViolationTable() {
             ))}
           </TableBody>
         </Table>
+        </div>
       </div>
     </div>
   );
