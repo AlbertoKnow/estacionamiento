@@ -79,7 +79,10 @@ class UserViewSet(
     mixins.UpdateModelMixin,
     GenericViewSet,
 ):
-    permission_classes = [IsJefeOperacionesOrAbove]
+    def get_permissions(self):
+        if self.action == 'list':
+            return [IsOperativoOrAbove()]
+        return [IsJefeOperacionesOrAbove()]
 
     def get_queryset(self):
         user = self.request.user

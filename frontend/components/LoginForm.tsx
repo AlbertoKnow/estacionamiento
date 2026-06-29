@@ -39,9 +39,8 @@ export default function LoginForm() {
     }
     setIsLoading(true);
     try {
-      await login(codigo.trim(), password);
-      const role = document.cookie.match(/utp_role=([^;]+)/)?.[1] ?? '';
-      router.push(ROLE_REDIRECTS[role] ?? '/dashboard');
+      const loggedUser = await login(codigo.trim(), password);
+      router.push(ROLE_REDIRECTS[loggedUser.rol] ?? '/dashboard');
     } catch (err: unknown) {
       const msg =
         (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail ??

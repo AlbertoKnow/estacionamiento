@@ -22,7 +22,7 @@ export interface AuthUser {
 interface AuthContextValue {
   user: AuthUser | null;
   isLoading: boolean;
-  login: (codigo: string, password: string) => Promise<void>;
+  login: (codigo: string, password: string) => Promise<AuthUser>;
   logout: () => Promise<void>;
 }
 
@@ -40,7 +40,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       .finally(() => setIsLoading(false));
   }, []);
 
-  const login = useCallback(async (codigo: string, password: string) => {
+  const login = useCallback(async (codigo: string, password: string): Promise<AuthUser> => {
     const res = await api.post<{ access: string; refresh: string; user: AuthUser }>(
       '/auth/login/',
       { codigo_institucional: codigo, password }
@@ -48,6 +48,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setAccessToken(res.data.access);
     await storeRefreshCookie(res.data.refresh, res.data.user.rol);
     setUser(res.data.user);
+    return res.data.user;
   }, []);
 
   const logout = useCallback(async () => {
