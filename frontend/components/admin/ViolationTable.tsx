@@ -82,7 +82,7 @@ export default function ViolationTable() {
                   <p className="text-xs text-slate-400">{v.user.codigo_institucional}</p>
                 </TableCell>
                 <TableCell>{v.vehicle?.placa ?? '—'}</TableCell>
-                <TableCell className="max-w-xs truncate">{v.tipo_falta.nombre}</TableCell>
+                <TableCell className="max-w-xs truncate">{v.tipo_falta.codigo}</TableCell>
                 <TableCell>
                   <Badge variant={NIVEL_VARIANT[v.tipo_falta.nivel]}>
                     {v.tipo_falta.nivel.replace('_', ' ')}

@@ -8,6 +8,13 @@ const STATUS_ICON = {
   idle: { Icon: CheckCircle, color: 'text-slate-300' },
 };
 
+function getLabel(item: ScanResultData): string {
+  if (item.status === 'success' && item.tipo === 'entry') return item.nombre;
+  if (item.status === 'success' && item.tipo === 'exit') return `Salida · ${item.espacio}`;
+  if (item.status === 'error') return item.message;
+  return 'Sin señal';
+}
+
 export default function ScanHistory({ items }: { items: ScanResultData[] }) {
   if (!items.length) return null;
   return (
@@ -19,7 +26,7 @@ export default function ScanHistory({ items }: { items: ScanResultData[] }) {
           return (
             <li key={i} className="flex items-center gap-2 text-sm text-slate-700">
               <Icon size={14} className={color} />
-              <span className="flex-1 truncate">{item.nombre ?? item.message ?? 'Sin señal'}</span>
+              <span className="flex-1 truncate">{getLabel(item)}</span>
               <span className="text-xs text-slate-400">
                 {item.timestamp.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' })}
               </span>

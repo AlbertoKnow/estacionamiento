@@ -122,7 +122,7 @@ export default function ViolationCreateForm({ onSuccess }: { onSuccess: () => vo
           <option value="">Seleccionar...</option>
           {types?.map((t) => (
             <option key={t.id} value={t.id}>
-              [{NIVEL_LABEL[t.nivel]}] {t.nombre}
+              [{NIVEL_LABEL[t.nivel]}] {t.codigo}
             </option>
           ))}
         </select>

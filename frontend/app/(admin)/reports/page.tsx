@@ -29,11 +29,11 @@ function ReportSection({
   const [loading, setLoading] = useState(false);
 
   async function handle() {
-    if (!campusId) { toast.error('No tienes campus asignado'); return; }
     if (showDates && (!dateFrom || !dateTo)) { toast.error('Selecciona el rango de fechas'); return; }
     setLoading(true);
     try {
-      const params: Record<string, string> = { format: fmt, campus_id: String(campusId) };
+      const params: Record<string, string> = { format: fmt };
+      if (campusId) params.campus_id = String(campusId);
       if (showDates) { params.date_from = dateFrom; params.date_to = dateTo; }
       await downloadReport(url, params, filename);
       toast.success('Reporte descargado');

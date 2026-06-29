@@ -64,12 +64,19 @@ export default function ScanResult({ result, onDismiss }: Props) {
         <Icon size={32} className={cfg.iconColor} />
         <div>
           <p className={`font-bold text-lg ${cfg.text}`}>{label}</p>
-          {result.nombre && (
+          {result.status === 'success' && result.tipo === 'entry' && (
             <p className={`text-sm ${cfg.text}`}>
-              {result.nombre} · {result.placa}
+              {result.nombre} · Espacio {result.espacio}
             </p>
           )}
-          {result.message && <p className={`text-sm ${cfg.text}`}>{result.message}</p>}
+          {result.status === 'success' && result.tipo === 'exit' && (
+            <p className={`text-sm ${cfg.text}`}>
+              Espacio {result.espacio} · {result.duracion_minutos} min
+            </p>
+          )}
+          {result.status === 'error' && (
+            <p className={`text-sm ${cfg.text}`}>{result.message}</p>
+          )}
           {result.status === 'offline' && (
             <p className={`text-xs ${cfg.text} mt-1`}>
               Se sincronizará al recuperar señal

@@ -5,7 +5,7 @@ export interface ViolationItem {
   id: number;
   tipo_falta: { codigo: string; descripcion: string; nivel: 'leve' | 'grave' | 'muy_grave' };
   fecha: string;
-  estado: 'PENDIENTE' | 'CONFIRMADA' | 'ANULADA';
+  estado: 'pendiente' | 'confirmada' | 'anulada' | 'apelada';
   descripcion: string;
   sancion?: { tipo: string; inicio: string; fin: string | null };
 }

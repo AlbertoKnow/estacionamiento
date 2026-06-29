@@ -58,7 +58,7 @@ export default function ViolationDetailPage({ params }: { params: Promise<{ id: 
     <div className="max-w-2xl space-y-6">
       <div className="flex items-center gap-3">
         <h1 className="text-2xl font-bold text-slate-800">Infracción #{v.id}</h1>
-        <Badge variant={v.estado === 'CONFIRMADA' ? 'destructive' : v.estado === 'ANULADA' ? 'secondary' : 'outline'}>
+        <Badge variant={v.estado === 'confirmada' ? 'destructive' : v.estado === 'anulada' ? 'secondary' : 'outline'}>
           {v.estado}
         </Badge>
       </div>
@@ -76,7 +76,7 @@ export default function ViolationDetailPage({ params }: { params: Promise<{ id: 
           </div>
           <div>
             <p className="text-slate-400">Tipo de falta</p>
-            <p className="font-medium">{v.tipo_falta.nombre}</p>
+            <p className="font-medium">{v.tipo_falta.codigo}</p>
             <Badge variant="outline" className="mt-1">{v.tipo_falta.nivel}</Badge>
           </div>
           <div>
@@ -102,7 +102,7 @@ export default function ViolationDetailPage({ params }: { params: Promise<{ id: 
         )}
       </div>
 
-      {canManage && v.estado === 'PENDIENTE' && (
+      {canManage && v.estado === 'pendiente' && (
         <div className="space-y-4">
           <Button onClick={handleConfirm} disabled={confirming} className="w-full">
             {confirming ? 'Confirmando...' : 'Confirmar infracción y aplicar sanción'}
