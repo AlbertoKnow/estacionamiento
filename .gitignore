@@ -1,6 +1,7 @@
 .env
 .env.production
 data/
+secrets/
 __pycache__/
 *.py[cod]
 *.pyo
