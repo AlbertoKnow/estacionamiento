@@ -12,6 +12,8 @@ PyJWT==2.8.*
 cryptography==42.*
 python-dateutil==2.9.*
 Pillow==10.4.*
+gunicorn==23.*
+whitenoise==6.8.*
 pytest-django==4.8.*
 pytest==8.2.*
 factory-boy==3.3.*

@@ -1,0 +1,55 @@
+services:
+  estacionamiento-db:
+    image: postgres:16-alpine
+    container_name: estacionamiento-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - proxy
+
+  estacionamiento-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: estacionamiento-backend
+    restart: unless-stopped
+    env_file:
+      - .env.production
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings.production
+      - DB_HOST=estacionamiento-db
+    volumes:
+      - ./data/static:/app/staticfiles
+      - ./data/media:/app/media
+    depends_on:
+      estacionamiento-db:
+        condition: service_healthy
+    networks:
+      - proxy
+
+  estacionamiento-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+    container_name: estacionamiento-frontend
+    restart: unless-stopped
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+    name: docker-server-network
