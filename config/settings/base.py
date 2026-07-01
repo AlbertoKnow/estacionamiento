@@ -109,8 +109,23 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
 }
 
-QR_PRIVATE_KEY = config('QR_PRIVATE_KEY', default='').replace('\\n', '\n')
-QR_PUBLIC_KEY = config('QR_PUBLIC_KEY', default='').replace('\\n', '\n')
+import os as _os
+
+_qr_priv_path = config('QR_PRIVATE_KEY_PATH', default='')
+_qr_pub_path = config('QR_PUBLIC_KEY_PATH', default='')
+
+if _qr_priv_path and _os.path.exists(_qr_priv_path):
+    with open(_qr_priv_path) as _f:
+        QR_PRIVATE_KEY = _f.read()
+else:
+    QR_PRIVATE_KEY = config('QR_PRIVATE_KEY', default='').replace('\\n', '\n')
+
+if _qr_pub_path and _os.path.exists(_qr_pub_path):
+    with open(_qr_pub_path) as _f:
+        QR_PUBLIC_KEY = _f.read()
+else:
+    QR_PUBLIC_KEY = config('QR_PUBLIC_KEY', default='').replace('\\n', '\n')
+
 QR_ENTRY_TOKEN_LIFETIME_SECONDS = config('QR_ENTRY_TOKEN_LIFETIME_SECONDS', default=300, cast=int)
 QR_SESSION_TOKEN_LIFETIME_SECONDS = config('QR_SESSION_TOKEN_LIFETIME_SECONDS', default=86400, cast=int)
 

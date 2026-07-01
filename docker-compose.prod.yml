@@ -4,13 +4,13 @@ services:
     container_name: estacionamiento-db
     restart: unless-stopped
     environment:
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=estacionamiento
+      - POSTGRES_USER=estacionamiento_user
+      - POSTGRES_PASSWORD=***REDACTED***
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      test: ["CMD-SHELL", "pg_isready -U estacionamiento_user -d estacionamiento"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -29,9 +29,15 @@ services:
     environment:
       - DJANGO_SETTINGS_MODULE=config.settings.production
       - DB_HOST=estacionamiento-db
+      - DB_NAME=estacionamiento
+      - DB_USER=estacionamiento_user
+      - DB_PASSWORD=***REDACTED***
+      - QR_PRIVATE_KEY_PATH=/run/secrets/qr_private.pem
+      - QR_PUBLIC_KEY_PATH=/run/secrets/qr_public.pem
     volumes:
       - ./data/static:/app/staticfiles
       - ./data/media:/app/media
+      - ./secrets:/run/secrets:ro
     depends_on:
       estacionamiento-db:
         condition: service_healthy
@@ -43,7 +49,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+        - NEXT_PUBLIC_API_URL=https://estacionamiento-api.albertoknow.com/api/v1
     container_name: estacionamiento-frontend
     restart: unless-stopped
     networks:
